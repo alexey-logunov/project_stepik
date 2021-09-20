@@ -1,5 +1,5 @@
 CONFIG = {
-'mode': 'django',
+'mode': 'wsgi',
 'working_dir': '/home/box/web/ask',
 'python': '/usr/bin/python3',
     'args': (
