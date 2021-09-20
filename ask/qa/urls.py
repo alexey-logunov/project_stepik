@@ -13,16 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-from django.urls import path
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('', views.test, name='index'),
-    path('login/', views.test, name='login'),
-    path('signup/', views.test, name='signup'),
-    path('question/<int:id>/', views.test, name='question'),
-    path('ask/', views.test, name='ask'),
-    path('popular/', views.test, name='popular'),
-    path('new/', views.test, name='new')
+    url(r'^$', views.test, name='index'),
+    url(r'^login/', views.test, name='login'),
+    url(r'^signup/', views.test, name='signup'),
+    url(r'^question/<int:id>/', views.test, name='question'),
+    url(r'^ask/', views.test, name='ask'),
+    url(r'^popular/', views.test, name='popular'),
+    url(r'^new/', views.test, name='new')
 ]
+
+# from django.urls import path
+# from . import views
+#
+# urlpatterns = [
+#     path('', views.test, name='index'),
+#     path('login/', views.test, name='login'),
+#     path('signup/', views.test, name='signup'),
+#     path('question/<int:id>/', views.test, name='question'),
+#     path('ask/', views.test, name='ask'),
+#     path('popular/', views.test, name='popular'),
+#     path('new/', views.test, name='new')
+# ]
