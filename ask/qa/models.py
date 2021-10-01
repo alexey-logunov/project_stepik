@@ -20,10 +20,8 @@ class Question(models.Model):
     objects = QuestionManager()
 
 
-user = User.objects.get_or_create(username='x', defaults={'password': 'y'})[0]
-
-
 class Answer(models.Model):
+    user = User.objects.get_or_create(username='x', defaults={'password': 'y'})[0]
     text = models.TextField()
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
     question = Question(title='qwe', text='qwe', author=user)
