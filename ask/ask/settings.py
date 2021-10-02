@@ -80,6 +80,7 @@ DATABASES = {
         'NAME': 'stepik_web',
         'USER': 'Alex',
         'PASSWORD': '0000',
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         #'HOST': 'localhost',
         #'PORT': ''
     }
