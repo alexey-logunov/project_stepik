@@ -51,10 +51,10 @@ class PopularView(View):
 
 class QuestionView(View):
     @require_GET
-    def get(self, request, pk, *args, **kwargs):
-        question = get_object_or_404(Question, pk)
-        answers = Answer.question.filter(question)
+    def get(self, request, question_id, *args, **kwargs):
+        question_details = get_object_or_404(Question, pk=question_id)
+        answers = Answer.question.filter(question_details)
         return render(request, 'qa/question_details.html', {
-            'question': question,
+            'question_details': question_details,
             'answers': answers,
         })

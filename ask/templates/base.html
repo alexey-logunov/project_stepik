@@ -33,7 +33,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ question.title }}</h5>
 <!--                <p class="card-text">{{ question.text }}</p>-->
-                <a href="{{ question.get_url }}" class="btn btn-primary">Подробнее</a>
+                <a href="{{ question.get_absolut_url }}" class="btn btn-primary">Подробнее</a>
             </div>
             <div class="card-footer text-muted">
                 {{ question.added_at|date:"Y-m-d H:i" }}
