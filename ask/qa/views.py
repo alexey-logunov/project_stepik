@@ -64,8 +64,8 @@ class PopularView(View):
 class QuestionView(View):
     def get(self, request, question_id, *args, **kwargs):
         question_details = get_object_or_404(Question, pk=question_id)
-        answers = question_details.answers.all()
+        answer_set = question_details.answers.all()
         return render(request, 'qa/question_details.html', {
             'question_details': question_details,
-            'answers': answers,
+            'answers': answer_set,
         })
