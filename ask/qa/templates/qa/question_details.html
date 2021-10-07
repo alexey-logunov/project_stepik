@@ -1,21 +1,34 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
-{{ question_details.title }}
+    {{ question_details.title }}
+{% endblock %}
+{% block header %}
+    {% include 'inc/_header.html' %}
 {% endblock %}
 {% block context %}
-<div class="card mb-3">
-    <div class="card-header">
-        Вопрос № {{ question_details.pk }} от {{ question_details.author }}:
+<div class="container mt-3">
+    <div class="row">
+        <div class="card mb-3">
+            <div class="card-header">
+                Вопрос № {{ question_details.pk }} от {{ question_details.author }}:
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ question_details.title }}</h5>
+                <p class="card-text">{{ question_details.text }}</p>
+                <hr>
+                {% for answer in answers %}
+                <p>{{ answer.author }} ответил {{ answer.added_at|date:"Y-m-d H:i" }}</p>
+                <p>{{ answer.text }}</p>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <h5 class="card-title">{{ question_details.title }}</h5>
-        <p class="card-text">{{ question_details.text }}</p>
-        <hr>
-        {% for answer in answers %}
-        <p>{{ answer.author }} ответил {{ answer.added_at|date:"Y-m-d H:i" }}</p>
-        <p>{{ answer.text }}</p>
-        <hr>
-        {% endfor %}
-    </div>
+</div>
+<div class="container mt-3">
+    <a href="{{ question_details.get_previous_by_pub_date.get_absolute_url }}">Previous question</a>
+    <a href="#">on top</a>
+    <a href="{{ question_details.get_next_by_pub_date.get_absolute_url }}">Next question</a>
 </div>
 {% endblock %}

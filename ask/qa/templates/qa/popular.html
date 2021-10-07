@@ -1,3 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Популярные вопросы{% endblock %}
+{% block header %}
+    {% include 'inc/_slider.html' %}
+{% endblock %}
 {% block pagination %}{% include 'inc/_pagination.html' %}{% endblock %}
