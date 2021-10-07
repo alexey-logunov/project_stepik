@@ -14,28 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+# from django.conf.urls import url
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    url(r'^', views.MainView.as_view(), name='home'),
-    url(r'^login/', views.test, name='login'),
-    url(r'^signup/', views.test, name='signup'),
-    url(r'^question/<int:question_id>/', views.QuestionView.as_view(), name='question_details'),
-    url(r'^ask/', views.test, name='ask'),
-    url(r'^popular/', views.PopularView.as_view(), name='popular'),
-    url(r'^new/', views.test, name='new')
+    path('', views.MainView.as_view(), name='home'),
+    path('login/', views.test, name='login'),
+    path('signup/', views.test, name='signup'),
+    path('question/<int:question_id>/', views.QuestionView.as_view(), name='question_details'),
+    path('ask/', views.test, name='ask'),
+    path('popular/', views.PopularView.as_view(), name='popular'),
+    path('new/', views.MainView.as_view(), name='new'),
 ]
 
-# from django.urls import path
-# from . import views
-#
 # urlpatterns = [
-#     path('', views.test, name='index'),
-#     path('login/', views.test, name='login'),
-#     path('signup/', views.test, name='signup'),
-#     path('question/<int:id>/', views.test, name='question'),
-#     path('ask/', views.test, name='ask'),
-#     path('popular/', views.test, name='popular'),
-#     path('new/', views.test, name='new')
+#     url(r'^', views.test, name='home'),
+#     url(r'^login/', views.test, name='login'),
+#     url(r'^signup/', views.test, name='signup'),
+#     url(r'^question/<int:question_id>/', views.QuestionView.as_view(), name='question_details'),
+#     url(r'^ask/', views.test, name='ask'),
+#     url(r'^popular/', views.PopularView.as_view(), name='popular'),
+#     url(r'^new/', views.MainView.as_view(), name='new')
 # ]

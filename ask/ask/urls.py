@@ -15,17 +15,15 @@ Including another URLconf
 """
 # import static as static
 from django.contrib import admin
-from django.conf.urls import include, url
+from django.urls import path, include
+# from django.conf.urls import include, url
+
+# urlpatterns = [
+#     url(r'^admin/', admin.site.urls),
+#     url(r'^', include('qa.urls')),
+# ]
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('qa.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('qa.urls'))
 ]
-
-# from django.contrib import admin
-# from django.urls import path, include
-#
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('qa/', include('qa.urls'))
-# ]
