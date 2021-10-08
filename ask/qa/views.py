@@ -1,8 +1,10 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
+from .forms import AnswerForm, AskForm
+from django.contrib.auth.decorators import login_required
 
 
 def test(request, *args, **kwargs):
@@ -69,3 +71,37 @@ class QuestionView(View):
             'question_details': question_details,
             'answers': answers,
         })
+
+
+@login_required
+def answer_add(request):
+    if request.method == "POST":
+        form = AnswerForm(request.user, request.POST)
+        if form.is_valid():
+            answer = form.save()
+            url = answer.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AnswerForm()
+    return render(request, 'qa/answer_add.html', {
+        'form': form
+    })
+
+
+@login_required
+def question_add(request):
+    if request.method == "POST":
+        # form = AskForm(request.user, request.POST)
+        form = AskForm(request.POST)
+        if form.is_valid():
+            # print(form.cleaned_data)
+            question = Question.objects.create(**form.cleaned_data)
+            return redirect(question)
+            # question = form.save()
+            # url = question.get_url()
+            # return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'qa/question_add.html', {
+        'form': form
+    })
