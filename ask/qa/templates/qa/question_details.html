@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-    {{ question_details.title }}
+{{ question_details.title }}
 {% endblock %}
 {% block header %}
-    {% include 'inc/_header.html' %}
+{% include 'inc/_header.html' %}
 {% endblock %}
 {% block context %}
 <div class="container mt-3">
@@ -23,9 +23,14 @@
                 <hr>
                 {% endfor %}
             </div>
+            <div class="card-footer text-muted">
+                <p>Вопрос был задан {{ question_details.added_at|date:"Y-m-d H:i" }}</p>
+                Рейтинг вопроса: {{ question_details.rating }}
+            </div>
         </div>
     </div>
 </div>
+{% include 'inc/_answer.html' %}
 <div class="container mt-3">
     <a href="{{ question_details.get_previous_by_pub_date.get_absolute_url }}">Previous question</a>
     <a href="#">on top</a>

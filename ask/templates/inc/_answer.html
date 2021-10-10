@@ -1,0 +1,28 @@
+<div class="card my-4">
+    <h5 class="card-header">Напишите свой ответ:</h5>
+    {% if user.is_authenticated %}
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.text }}
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить ответ</button>
+        </form>
+    </div>
+    {% else %}
+    <h6 class="card-header"><a href="{% url 'signin' %}">Авторизуйтесь</a> или <a href="{% url 'signup' %}">зарегистрируйтесь</a> чтобы оставить комментарий</h6>
+    {% endif %}
+</div>
+
+{% comment %}
+{% for answer in question.answers.all %}
+<div class="media mb-4">
+    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+    <div class="media-body">
+        <h5 class="mt-0">{{answer.username}}</h5>
+        {{answer.text}}
+    </div>
+</div>
+{% endfor %}
+{% endcomment %}

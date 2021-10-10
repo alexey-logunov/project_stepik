@@ -10,24 +10,47 @@ class AskForm(forms.Form):
         'rows': 5,
     }))
 
+# class AskForm(forms.ModelForm):
+#     class Meta:
+#         model = Question
+#         fields = ('title', 'text')
+#         widgets = {
+#             'title': forms.TextInput(attrs={'class': 'form-control'}),
+#             'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+#         }
+
     # def __init__(self, user, *args, **kwargs):
     #     self._user = user
     #     super(AskForm, self).__init__(*args, **kwargs)
 
-    def clean_guestion(self):
-        guestion = self.cleaned_data['guestion']
+    def clean_question(self):
+        question = self.cleaned_data['question']
         # if not is_ethic(answer):
         #     raise forms.ValidationError(u'Сообщение не корректно', code=12)
-        return f'{guestion}\nThank you for your attention!'
+        return f'{question}\nThank you for your attention!'
 
     def save(self):
-        guestion = Question(**self.cleaned_data)
-        guestion.save()
-        return guestion
+        question = Question(**self.cleaned_data)
+        question.save()
+        return question
+
+
+# class AnswerForm(forms.ModelForm):
+#     class Meta:
+#         model = Answer
+#         fields = ('text', 'question')
+#         widgets = {
+#             'text': forms.Textarea(attrs={
+#                 'class': 'form-control',
+#                 'rows': 5}),
+#             'question': forms.Select(attrs={
+#                 'class': 'form-control',
+#             }),
+#         }
 
 
 class AnswerForm(forms.Form):
-    text = forms.CharField(label='Описание вопроса',
+    text = forms.CharField(label='Ответ',
                            required=False,
                            widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}, )
                            )
@@ -36,9 +59,9 @@ class AnswerForm(forms.Form):
                                       widget=forms.Select(attrs={'class': 'form-control'}, )
                                       )
 
-    def __init__(self, user, *args, **kwargs):
-        self._user = user
-        super(AnswerForm, self).__init__(*args, **kwargs)
+    # def __init__(self, user, *args, **kwargs):
+    #     self._user = user
+    #     super(AnswerForm, self).__init__(*args, **kwargs)
 
     # def clean(self):
     #     if self._user.is_banned:
@@ -48,8 +71,8 @@ class AnswerForm(forms.Form):
     #     self.cleaned_data['author'] = self._user
     #     return Answer.objects.create(**self.cleaned_data)
 
-    def clean_answer(self):
-        answer = self.cleaned_data['answer']
+    def clean(self):
+        answer = self.cleaned_data['text']
         # if not is_ethic(answer):
         #     raise forms.ValidationError(u'Сообщение не корректно', code=12)
         return f'{answer}\nThank you for your attention!'
