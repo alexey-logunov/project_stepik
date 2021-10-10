@@ -2,22 +2,22 @@ from django import forms
 from .models import Answer, Question
 
 
-class AskForm(forms.Form):
-    title = forms.CharField(max_length=150, label='Название вопроса',
-                            widget=forms.TextInput(attrs={'class': 'form-control'}))
-    text = forms.CharField(label='Описание вопроса', required=False, widget=forms.Textarea(attrs={
-        'class': 'form-control',
-        'rows': 5,
-    }))
+# class AskForm(forms.Form):
+#     title = forms.CharField(max_length=150, label='Название вопроса',
+#                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     text = forms.CharField(label='Описание вопроса', required=False, widget=forms.Textarea(attrs={
+#         'class': 'form-control',
+#         'rows': 5,
+#     }))
 
-# class AskForm(forms.ModelForm):
-#     class Meta:
-#         model = Question
-#         fields = ('title', 'text')
-#         widgets = {
-#             'title': forms.TextInput(attrs={'class': 'form-control'}),
-#             'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
-#         }
+class AskForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ('title', 'text')
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
 
     # def __init__(self, user, *args, **kwargs):
     #     self._user = user

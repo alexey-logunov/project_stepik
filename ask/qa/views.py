@@ -118,8 +118,8 @@ def question_add(request):
         form = AskForm(request.POST)
         if form.is_valid():
             # print(form.cleaned_data)
-            question = Question.objects.create(**form.cleaned_data)
-            # question = form.save()
+            # question = Question.objects.create(**form.cleaned_data)
+            question = form.save()
             return redirect(question)
             # question = form.save()
             # url = question.get_url()
