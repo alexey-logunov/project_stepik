@@ -13,9 +13,11 @@
             <li class="nav-item active">
                 <a href="{% url 'home' %}" class="nav-link">Главная</a>
             </li>
-            <li class="nav-item">
-                <a href="{% url 'question_add' %}" class="nav-link">Задать вопрос</a>
-            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'question_add' %}" class="nav-link">Задать вопрос</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a href="{{ '#' }}" class="nav-link">Контакты</a>
             </li>

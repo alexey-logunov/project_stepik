@@ -6,22 +6,27 @@ from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
 from .forms import AnswerForm, AskForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+
+from .utils import MyMixin
 
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
-
+# class MainView(MyMixin, ListView):
 class MainView(ListView):
     model = Question
     template_name = 'qa/index.html'
     context_object_name = 'questions'
     # queryset = Question.objects.select_related('author')
+    # mixin_prop = 'hello, world!'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         questions = super().get_context_data(**kwargs)
         questions['title'] = 'Главная страница'
+        # questions['mixin_prop'] = self.get_prop()
         return questions
 
     def get_queryset(self):
@@ -150,10 +155,12 @@ def answer_add(request):
     })
 
 
-class CreateQuestion(CreateView):
+class CreateQuestion(LoginRequiredMixin, CreateView):
     form_class = AskForm
     template_name = 'qa/question_add.html'
     # success_url = reverse_lazy('home')
+    login_url = '/login/'
+    # raise_exception = True
 
 # @login_required
 # def question_add(request):
