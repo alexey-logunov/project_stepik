@@ -8,25 +8,23 @@
 {% endblock %}
 {% block context %}
 <div class="container mt-3">
-    <div class="row">
-        <div class="card mb-3">
-            <div class="card-header">
-                Вопрос № {{ question_details.pk }} от {{ question_details.author }}:
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">{{ question_details.title }}</h5>
-                <p class="card-text">{{ question_details.text }}</p>
-                <hr>
-                {% for answer in answers %}
-                <p>{{ answer.author }} ответил {{ answer.added_at|date:"Y-m-d H:i" }}</p>
-                <p>{{ answer.text }}</p>
-                <hr>
-                {% endfor %}
-            </div>
-            <div class="card-footer text-muted">
-                <p>Вопрос был задан {{ question_details.added_at|date:"Y-m-d H:i" }}</p>
-                Рейтинг вопроса: {{ question_details.rating }}
-            </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            Вопрос № {{ question_details.pk }} от {{ question_details.author }}:
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ question_details.title }}</h5>
+            <p class="card-text">{{ question_details.text }}</p>
+            <hr>
+            {% for answer in answers %}
+            <p>{{ answer.author }} ответил {{ answer.added_at|date:"Y-m-d H:i" }}</p>
+            <p>{{ answer.text }}</p>
+            <hr>
+            {% endfor %}
+        </div>
+        <div class="card-footer text-muted">
+            <p>Вопрос был задан {{ question_details.added_at|date:"Y-m-d H:i" }}</p>
+            Рейтинг вопроса: {{ question_details.rating }}
         </div>
     </div>
 </div>

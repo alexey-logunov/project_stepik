@@ -23,11 +23,11 @@ class AskForm(forms.ModelForm):
     #     self._user = user
     #     super(AskForm, self).__init__(*args, **kwargs)
 
-    def clean_question(self):
-        question = self.cleaned_data['question']
-        # if not is_ethic(answer):
+    def clean_text(self):
+        text = self.cleaned_data['text']
+        # if not is_ethic(text):
         #     raise forms.ValidationError(u'Сообщение не корректно', code=12)
-        return f'{question}\nThank you for your attention!'
+        return f'{text}\nThank you for your attention!'
 
     def save(self):
         question = Question(**self.cleaned_data)
