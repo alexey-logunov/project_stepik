@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os.path
 from pathlib import Path
+
 # import pymysql  #
 #
 # pymysql.install_as_MySQLdb()  #
@@ -39,9 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qa',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,8 +83,8 @@ DATABASES = {
         'NAME': 'stepik_web',
         'USER': 'Alex',
         'PASSWORD': '0000',
-        #'HOST': 'localhost',
-        #'PORT': ''
+        'HOST': 'localhost',
+        'PORT': ''
     }
 }
 
@@ -132,8 +135,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'qa/static'),
 ]
 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# INTERNAL_IPS = ['127.0.0.1']

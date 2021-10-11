@@ -27,7 +27,7 @@ class AskForm(forms.ModelForm):
         text = self.cleaned_data['text']
         # if not is_ethic(text):
         #     raise forms.ValidationError(u'Сообщение не корректно', code=12)
-        return f'{text}\nThank you for your attention!'
+        return text
 
     def save(self):
         question = Question(**self.cleaned_data)

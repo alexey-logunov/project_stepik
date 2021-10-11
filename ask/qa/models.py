@@ -21,7 +21,7 @@ class Question(models.Model):
     likes = models.ManyToManyField(User, related_name='likes_set', verbose_name='Количество лайков вопроса')
 
     def get_absolute_url(self):
-        return reverse('question', kwargs={'question_id': self.pk})
+        return reverse('question', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title

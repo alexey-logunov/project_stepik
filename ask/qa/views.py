@@ -1,11 +1,12 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
 from .forms import AnswerForm, AskForm
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 
 def test(request, *args, **kwargs):
@@ -16,6 +17,7 @@ class MainView(ListView):
     model = Question
     template_name = 'qa/index.html'
     context_object_name = 'questions'
+    # queryset = Question.objects.select_related('author')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         questions = super().get_context_data(**kwargs)
@@ -23,7 +25,7 @@ class MainView(ListView):
         return questions
 
     def get_queryset(self):
-        return Question.objects.new()
+        return Question.objects.new().select_related('author')
 
 
 # class MainView(View):
@@ -55,7 +57,7 @@ class MainView(ListView):
 class PopularView(MainView):
 
     def get_queryset(self):
-        return Question.objects.popular()
+        return Question.objects.popular().prefetch_related('likes')
 
 
 # class PopularView(View):
@@ -84,24 +86,24 @@ class PopularView(MainView):
 #         })
 
 
-# class QuestionView(ListView):
+# class QuestionView(DetailView):
 #     model = Question
 #     template_name = 'qa/question_details.html'
-#     context_object_name = 'question'
+#     context_object_name = 'question_details'
 #     allow_empty = False
 #
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         question_details = super().get_context_data(**kwargs)
-#         question_details['title'] = Question.objects.get(pk=self.kwargs['question_id'])
-#         return question_details
-#
-#     def get_queryset(self):
-#         return Question.objects.filter(pk=self.kwargs['question_id'])
+#     # def get_context_data(self, *, object_list=None, **kwargs):
+#     #     question_details = super().get_context_data(**kwargs)
+#     #     question_details['title'] = Question.objects.get(pk=self.kwargs['question_id'])
+#     #     return question_details
+#     #
+#     # def get_queryset(self):
+#     #     return Question.objects.filter(pk=self.kwargs['question_id'])
 
 
 class QuestionView(View):
-    def get(self, request, question_id, *args, **kwargs):
-        question_details = get_object_or_404(Question, pk=question_id)
+    def get(self, request, pk, *args, **kwargs):
+        question_details = get_object_or_404(Question, pk=pk)
         answers = question_details.answers.all()
         form = AnswerForm()
         return render(request, 'qa/question_details.html', {
@@ -110,11 +112,11 @@ class QuestionView(View):
             'form': form,
         })
 
-    def post(self, request, question_id, *args, **kwargs):
+    def post(self, request, pk, *args, **kwargs):
         form = AnswerForm(request.POST)
         if form.is_valid():
             text = request.POST['text']
-            question_details = get_object_or_404(Question, pk=question_id)
+            question_details = get_object_or_404(Question, pk=pk)
             author = self.request.user
             # print(form.cleaned_data)
             answer = Answer.objects.create(question_details=question_details, author=author, text=text)
@@ -148,21 +150,26 @@ def answer_add(request):
     })
 
 
-@login_required
-def question_add(request):
-    if request.method == "POST":
-        # form = AskForm(request.user, request.POST)
-        form = AskForm(request.POST)
-        if form.is_valid():
-            # print(form.cleaned_data)
-            # question = Question.objects.create(**form.cleaned_data)
-            question = form.save()
-            return redirect(question)
-            # question = form.save()
-            # url = question.get_url()
-            # return HttpResponseRedirect(url)
-    else:
-        form = AskForm()
-    return render(request, 'qa/question_add.html', {
-        'form': form
-    })
+class CreateQuestion(CreateView):
+    form_class = AskForm
+    template_name = 'qa/question_add.html'
+    # success_url = reverse_lazy('home')
+
+# @login_required
+# def question_add(request):
+#     if request.method == "POST":
+#         # form = AskForm(request.user, request.POST)
+#         form = AskForm(request.POST)
+#         if form.is_valid():
+#             # print(form.cleaned_data)
+#             # question = Question.objects.create(**form.cleaned_data)
+#             question = form.save()
+#             return redirect(question)
+#             # question = form.save()
+#             # url = question.get_url()
+#             # return HttpResponseRedirect(url)
+#     else:
+#         form = AskForm()
+#     return render(request, 'qa/question_add.html', {
+#         'form': form
+#     })
