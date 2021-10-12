@@ -71,11 +71,11 @@ class AnswerForm(forms.Form):
     #     self.cleaned_data['author'] = self._user
     #     return Answer.objects.create(**self.cleaned_data)
 
-    def clean(self):
-        answer = self.cleaned_data['text']
+    def clean_text(self):
+        text = self.cleaned_data['text']
         # if not is_ethic(answer):
         #     raise forms.ValidationError(u'Сообщение не корректно', code=12)
-        return f'{answer}\nThank you for your attention!'
+        return text
 
     def save(self):
         answer = Answer(**self.cleaned_data)
