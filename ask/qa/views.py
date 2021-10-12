@@ -20,6 +20,7 @@ class MainView(ListView):
     model = Question
     template_name = 'qa/index.html'
     context_object_name = 'questions'
+    paginate_by = 10
     # queryset = Question.objects.select_related('author')
     # mixin_prop = 'hello, world!'
 
@@ -48,14 +49,14 @@ class MainView(ListView):
 #             raise Http404
 #         paginator = Paginator(questions, limit)
 #         try:
-#             page = paginator.page(page_number)
+#             page_obj = paginator.page(page_number)
 #         except EmptyPage:
-#             page = paginator.page(paginator.num_pages)
+#             page_obj = paginator.page(paginator.num_pages)
 #         paginator.baseurl = '/?page='
 #         return render(request, 'qa/index.html', {
-#             'questions': page.object_list,
+#             'questions': page_obj.object_list,
 #             'paginator': paginator,
-#             'page': page,
+#             'page_obj': page_obj,
 #         })
 
 
