@@ -4,11 +4,11 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
-from .forms import AnswerForm, AskForm, SignUpForm
+from .forms import AnswerForm, AskForm, SignUpForm, SignInForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from .utils import MyMixin
 
 
@@ -201,5 +201,26 @@ class SignUpView(View):
                 login(request, user)
                 return HttpResponseRedirect('/')
         return render(request, 'qa/signup.html', {
+            'form': form,
+        })
+
+
+class SignInView(View):
+    def get(self, request, *args, **kwargs):
+        form = SignInForm()
+        return render(request, 'qa/login.html', {
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+        return render(request, 'qa/login.html', {
             'form': form,
         })
