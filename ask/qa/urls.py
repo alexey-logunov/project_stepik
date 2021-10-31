@@ -21,7 +21,7 @@ from . import views
 urlpatterns = [
     path('', views.MainView.as_view(), name='home'),
     path('login/', views.test, name='login'),
-    path('signup/', views.test, name='signup'),
+    path('signup/', views.SignUpView.as_view(), name='signup'),
     path('question/<int:pk>/', views.QuestionView.as_view(), name='question'),
     path('ask/', views.CreateQuestion.as_view(), name='question_add'),
     path('popular/', views.PopularView.as_view(), name='popular'),

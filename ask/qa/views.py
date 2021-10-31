@@ -4,16 +4,17 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
-from .forms import AnswerForm, AskForm
+from .forms import AnswerForm, AskForm, SignUpForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-
+from django.contrib.auth import login
 from .utils import MyMixin
 
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
+
 
 # class MainView(MyMixin, ListView):
 class MainView(ListView):
@@ -21,6 +22,7 @@ class MainView(ListView):
     template_name = 'qa/index.html'
     context_object_name = 'questions'
     paginate_by = 10
+
     # queryset = Question.objects.select_related('author')
     # mixin_prop = 'hello, world!'
 
@@ -137,23 +139,23 @@ class QuestionView(View):
         })
 
 
-@login_required
-def answer_add(request):
-    if request.method == "POST":
-        # form = AnswerForm(request.user, request.POST)
-        form = AnswerForm(request.POST)
-        if form.is_valid():
-            # print(form.cleaned_data)
-            answer = Answer.objects.create(**form.cleaned_data)
-            return redirect(answer)
-            # answer = form.save()
-            # url = answer.get_url()
-            # return HttpResponseRedirect(url)
-    else:
-        form = AnswerForm()
-    return render(request, 'qa/answer_add.html', {
-        'form': form
-    })
+# @login_required
+# def answer_add(request):
+#     if request.method == "POST":
+#         # form = AnswerForm(request.user, request.POST)
+#         form = AnswerForm(request.POST)
+#         if form.is_valid():
+#             # print(form.cleaned_data)
+#             answer = Answer.objects.create(**form.cleaned_data)
+#             return redirect(answer)
+#             # answer = form.save()
+#             # url = answer.get_url()
+#             # return HttpResponseRedirect(url)
+#     else:
+#         form = AnswerForm()
+#     return render(request, 'qa/answer_add.html', {
+#         'form': form
+#     })
 
 
 class CreateQuestion(LoginRequiredMixin, CreateView):
@@ -162,6 +164,7 @@ class CreateQuestion(LoginRequiredMixin, CreateView):
     # success_url = reverse_lazy('home')
     login_url = '/login/'
     # raise_exception = True
+
 
 # @login_required
 # def question_add(request):
@@ -181,3 +184,22 @@ class CreateQuestion(LoginRequiredMixin, CreateView):
 #     return render(request, 'qa/question_add.html', {
 #         'form': form
 #     })
+
+
+class SignUpView(View):
+    def get(self, request, *args, **kwargs):
+        form = SignUpForm()
+        return render(request, 'qa/signup.html', {
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+        return render(request, 'qa/signup.html', {
+            'form': form,
+        })
