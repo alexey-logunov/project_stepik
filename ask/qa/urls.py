@@ -16,16 +16,19 @@ Including another URLconf
 
 # from django.conf.urls import url
 from django.urls import path
-from . import views
+from .views import MainView, QuestionView, PopularView, CreateQuestion, SignUpView, SignInView
+from django.contrib.auth.views import LogoutView
+from django.conf import settings
 
 urlpatterns = [
-    path('', views.MainView.as_view(), name='home'),
-    path('login/', views.SignInView.as_view(), name='login'),
-    path('signup/', views.SignUpView.as_view(), name='signup'),
-    path('question/<int:pk>/', views.QuestionView.as_view(), name='question'),
-    path('ask/', views.CreateQuestion.as_view(), name='question_add'),
-    path('popular/', views.PopularView.as_view(), name='popular'),
-    path('new/', views.MainView.as_view(), name='new'),
+    path('', MainView.as_view(), name='home'),
+    path('login/', SignInView.as_view(), name='login'),
+    path('signup/', SignUpView.as_view(), name='signup'),
+    path('question/<int:pk>/', QuestionView.as_view(), name='question'),
+    path('ask/', CreateQuestion.as_view(), name='question_add'),
+    path('popular/', PopularView.as_view(), name='popular'),
+    path('new/', MainView.as_view(), name='new'),
+    path('signout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='signout'),
 ]
 
 # urlpatterns = [
