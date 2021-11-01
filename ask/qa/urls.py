@@ -16,7 +16,7 @@ Including another URLconf
 
 # from django.conf.urls import url
 from django.urls import path
-from .views import MainView, QuestionView, PopularView, CreateQuestion, SignUpView, SignInView
+from .views import MainView, QuestionView, PopularView, CreateQuestion, SignUpView, SignInView, FeedBackView, SuccessView
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 
@@ -29,6 +29,8 @@ urlpatterns = [
     path('popular/', PopularView.as_view(), name='popular'),
     path('new/', MainView.as_view(), name='new'),
     path('signout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='signout'),
+    path('contact/', FeedBackView.as_view(), name='contact'),
+    path('contact/success/', SuccessView.as_view(), name='success'),
 ]
 
 # urlpatterns = [

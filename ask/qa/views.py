@@ -4,11 +4,12 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Question, Answer
 from django.core.paginator import Paginator, EmptyPage
-from .forms import AnswerForm, AskForm, SignUpForm, SignInForm
+from .forms import AnswerForm, AskForm, SignUpForm, SignInForm, FeedBackForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
+from django.core.mail import send_mail, BadHeaderError
 from .utils import MyMixin
 
 
@@ -223,4 +224,35 @@ class SignInView(View):
                 return HttpResponseRedirect('/')
         return render(request, 'qa/login.html', {
             'form': form,
+        })
+
+
+class FeedBackView(View):
+    def get(self, request, *args, **kwargs):
+        form = FeedBackForm()
+        return render(request, 'qa/contact.html', {
+            'form': form,
+            'title': 'Написать мне'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = FeedBackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            from_email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(f'От {name} | {subject}', message, from_email, ['al_logunov@mail.ru'])
+            except BadHeaderError:
+                return HttpResponse('Невалидный заголовок')
+            return HttpResponseRedirect('success')
+        return render(request, 'qa/contact.html', {
+            'form': form,
+        })
+
+class SuccessView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'qa/success.html', {
+            'title': 'Спасибо за обратную связь!'
         })
