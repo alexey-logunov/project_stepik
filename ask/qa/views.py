@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail, BadHeaderError
+from django.db.models import Q
 from .utils import MyMixin
 
 
@@ -255,4 +256,21 @@ class SuccessView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'qa/success.html', {
             'title': 'Спасибо за обратную связь!'
+        })
+
+class SearchResultsView(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('q')
+        results = ""
+        if query:
+            results = Question.objects.filter(
+                Q(title__icontains=query) | Q(text__icontains=query)
+            )
+        paginator = Paginator(results, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'qa/search.html', {
+            'title': 'Поиск',
+            'results': page_obj,
+            'count': paginator.count
         })
